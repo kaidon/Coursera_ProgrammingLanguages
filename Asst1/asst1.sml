@@ -106,4 +106,29 @@ fun get_nth(
     else if n = 1
     then hd values
     else get_nth(tl values, n-1)
+
+(* List of months, in order, used for converting a month index
+   into a string value. *)
+val Months = 
+    [ "January"
+     ,"February"
+     ,"March"
+     ,"April"
+     ,"May"
+     ,"June"
+     ,"July"
+     ,"August"
+     ,"September"
+     ,"October"
+     ,"November"
+     ,"December"
+    ];
+
+(* Converts a date into a string, of format "MMM dd, YYYY".
+
+   eg: (2013,1,20) ==> January 20, 2013
+
+ *)
+fun date_to_string( date : (int * int * int) ) =
+    get_nth(Months,(#2 date))^" "^(Int.toString (#3 date))^", "^(Int.toString (#1 date))
     

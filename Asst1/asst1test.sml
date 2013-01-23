@@ -194,3 +194,14 @@ else "fail"
 val get_nth__mid = if get_nth(["a","b","c"],2) = "b"
 then "pass"
 else "fail"
+
+(**********************)
+(* Tests for date_to_string  *)
+(**********************)
+val date_to_string__Jan1_2000 = if date_to_string((2000,1,1))="January 1, 2000"
+then "pass"
+else "fail"
+
+val date_to_string__May20_1981 = if date_to_string((1981,5,20))="May 20, 1981"
+then "pass"
+else "fail" 
