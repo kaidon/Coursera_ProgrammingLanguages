@@ -161,3 +161,11 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+
+# Emacs backup files
+*.~*~
+\#*\#
+*~
+# Emacs backups of hidden files, like ".gitignore.~3~"
+.*.~*~
+.\#*
