@@ -89,3 +89,21 @@ fun dates_in_months
 	    end
         end 
 
+(* Returns the nth string in a list of strings.
+   Does not consider a string list of a size smaller than n.
+  
+   Uses a 1-starting-index -based list, where {string << index} is:
+     {String1 << 1, String2 << 2, ..., StringN << N} 
+ *)
+
+fun get_nth(
+  values : string list
+ ,n      : int
+) =
+    if null values
+    then hd [] (* As per assignment description, 
+                  apply hd or tl to the empty list in this case, which is okay *)
+    else if n = 1
+    then hd values
+    else get_nth(tl values, n-1)
+    

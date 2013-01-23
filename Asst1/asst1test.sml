@@ -178,3 +178,19 @@ val dates_in_months__match_some = if dates_in_months
 ) = [(2000,1,1)]
 then "pass"
 else "fail"
+
+(**********************)
+(* Tests for get_nth  *)
+(**********************)
+
+val get_nth__first = if get_nth(["a","b","c"],1) = "a"
+then "pass"
+else "fail"
+
+val get_nth__last = if get_nth(["a","b","c"],3) = "c"
+then "pass"
+else "fail"
+
+val get_nth__mid = if get_nth(["a","b","c"],2) = "b"
+then "pass"
+else "fail"
