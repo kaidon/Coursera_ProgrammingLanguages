@@ -1,6 +1,8 @@
 use "asst1.sml";
 
+(**********************)
 (* Tests for is_older *)
+(**********************)
 val is_older__d1_greater_d2 = if is_older( (2000,12,1), (2000,1,1) )
 then "pass"
 else "fail"
@@ -21,4 +23,33 @@ val is_older__d1_greater_d2_daydiff = if is_older( (2000,1,31), (2000,1,10) )
 then "pass"
 else "fail"
 
+(**********************)
+(* Tests for number_in_month *)
+(**********************)
+val number_in_months__null_list = if number_in_month ( [], 10 ) = 0 
+then "pass"
+else "fail"
 
+val number_in_months__match_none = if number_in_month 
+(
+  [(2000,1,1), (2000,2,1), (2000,3,1)]
+ ,4
+) = 0
+then "pass"
+else "fail"
+
+val number_in_months__match_all = if number_in_month 
+(
+  [(2000,1,1), (2000,1,2), (2000,1,3)]
+ ,1
+) = 3
+then "pass"
+else "fail"
+
+val number_in_months__match_some = if number_in_month
+(
+  [(2000,1,1), (2000,2,1), (2000,3,1)]
+ ,2
+) = 1
+then "pass"
+else "fail"
