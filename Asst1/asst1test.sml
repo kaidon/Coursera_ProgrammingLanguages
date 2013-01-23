@@ -26,11 +26,11 @@ else "fail"
 (**********************)
 (* Tests for number_in_month *)
 (**********************)
-val number_in_months__null_list = if number_in_month ( [], 10 ) = 0 
+val number_in_month__null_list = if number_in_month ( [], 10 ) = 0 
 then "pass"
 else "fail"
 
-val number_in_months__match_none = if number_in_month 
+val number_in_month__match_none = if number_in_month
 (
   [(2000,1,1), (2000,2,1), (2000,3,1)]
  ,4
@@ -38,7 +38,7 @@ val number_in_months__match_none = if number_in_month
 then "pass"
 else "fail"
 
-val number_in_months__match_all = if number_in_month 
+val number_in_month__match_all = if number_in_month
 (
   [(2000,1,1), (2000,1,2), (2000,1,3)]
  ,1
@@ -46,10 +46,57 @@ val number_in_months__match_all = if number_in_month
 then "pass"
 else "fail"
 
-val number_in_months__match_some = if number_in_month
+val number_in_month__match_some = if number_in_month
 (
   [(2000,1,1), (2000,2,1), (2000,3,1)]
  ,2
+) = 1
+then "pass"
+else "fail"
+
+(**********************)
+(* Tests for number_in_months *)
+(**********************)
+val number_in_months__null_date_list = if number_in_months
+( 
+  []
+ ,[1,2,3] 
+) = 0 
+then "pass"
+else "fail"
+
+val number_in_months__null_month_list = if number_in_months
+( 
+  [(2000,1,1),(2000,2,1),(2000,3,1)]
+ ,[] 
+) = 0 
+then "pass"
+else "fail"
+
+val number_in_months__null_both_list = if number_in_months ( [], [] ) = 0 
+then "pass"
+else "fail"
+
+val number_in_months__match_none = if number_in_months
+(
+  [(2000,1,1), (2000,2,1), (2000,3,1)]
+ ,[4,5,6]
+) = 0
+then "pass"
+else "fail"
+
+val number_in_months__match_all = if number_in_months
+(
+  [(2000,1,1), (2000,2,2), (2000,3,3)]
+ ,[1,2,3,4,5,6]
+) = 3
+then "pass"
+else "fail"
+
+val number_in_months__match_some = if number_in_months
+(
+  [(2000,1,1), (2000,2,1), (2000,3,1)]
+ ,[1,4,5,6,7]
 ) = 1
 then "pass"
 else "fail"

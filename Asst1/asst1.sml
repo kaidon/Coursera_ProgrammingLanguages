@@ -15,9 +15,24 @@ fun is_older( date1 : (int * int * int), date2 : (int * int * int) ) =
 fun number_in_month ( dates : (int * int * int) list, hasMonth : int ) =
     let
 	fun inMonth ( date : (int * int * int) ) =
-        if (#2 date) = hasMonth then 1 else 0
+            if (#2 date) = hasMonth then 1 else 0
     in
         if null dates
         then 0
         else inMonth( (hd dates) ) + number_in_month( tl dates, hasMonth)
+    end
+
+(* takes a list of dates and list of months, returning the number
+   of dates that have a month that match any value in the list of
+   months *)
+fun number_in_months ( 
+   dates  : (int * int * int) list
+ , months : (int)             list ) =
+    let
+	fun inMonth ( month : int ) =
+             number_in_month(dates, month) 
+    in
+        if null months
+        then 0
+	else inMonth( (hd months) ) + number_in_months( dates, tl months)
     end
