@@ -205,3 +205,39 @@ else "fail"
 val date_to_string__May20_1981 = if date_to_string((1981,5,20))="May 20, 1981"
 then "pass"
 else "fail" 
+
+(**********************)
+(* Tests for number_before_reaching_sum *)
+(**********************)
+
+(* 1->0 < 0 ... n = 1
+   2->1 > 0
+ *)
+val number_before_reaching_sum__simple_case = 
+    if number_before_reaching_sum( 1, [0,1] ) = 1
+    then "pass"
+    else " fail"
+
+(* 1->0  < 4
+   2->1  < 4
+   3->3  < 4 ... n = 3
+   4->6  > 4
+   5->10 > 4
+   6->15 > 4
+ *)
+val number_before_reaching_sum__more_complex = 
+    if number_before_reaching_sum( 4, [0,1,2,3,4,5] ) = 3
+    then "pass"
+    else "fail"
+
+(* 1->0  < 7
+   2->1  < 7
+   3->3  < 7 
+   4->6  < 7 ... n = 4
+   5->10 > 7
+   6->15 > 7
+ *)
+val number_before_reaching_sum__more_complex2 = 
+if number_before_reaching_sum( 7, [0,1,2,3,4,5] ) = 4
+    then "pass"
+    else "fail"

@@ -132,3 +132,39 @@ val Months =
 fun date_to_string( date : (int * int * int) ) =
     get_nth(Months,(#2 date))^" "^(Int.toString (#3 date))^", "^(Int.toString (#1 date))
     
+(* Returns an int, n, such that the first n elements of the list l
+   add to less than sum, but the first n+1 elements of the list, l, add to sum
+   or more. 
+
+   sum -- Assumed to be >= 0
+   l   -- Each value assumed to be >= 0
+       -- Sum(l) > parameter sum
+
+ *)
+fun number_before_reaching_sum( sum : int, l : int list ) =    
+    let fun headSum( hlist : int list, hsum : int, index : int) =
+	    if null hlist
+	    then hd [] (* unsupported case *)
+            else
+		let val activeSum = hsum + hd hlist
+                    val nextSum   = activeSum + (hd (tl hlist))
+                in
+                     (* check running sum + head < sum
+                        and   running sum + head + head+1 >= sum
+                        if so... return the index, n *)
+		    if ( (activeSum < sum)
+                        andalso (nextSum >= sum))
+		    then index
+                      (* otherwise continue to the next head
+                         and increment the index *)
+		    else headSum(tl hlist, activeSum, index + 1)
+                end
+    in
+        (* prime headSum with
+           full list:l
+           starting some of all head values:0
+           starting index (n):1
+         *)
+	headSum(l, 0, 1)
+    end
+
