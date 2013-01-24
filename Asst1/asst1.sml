@@ -152,8 +152,7 @@ fun number_before_reaching_sum( sum : int, l : int list ) =
                      (* check running sum + head < sum
                         and   running sum + head + head+1 >= sum
                         if so... return the index, n *)
-		    if ( (activeSum < sum)
-                        andalso (nextSum >= sum))
+		    if ( (activeSum < sum) andalso (nextSum >= sum))
 		    then index
                       (* otherwise continue to the next head
                          and increment the index *)
@@ -168,3 +167,22 @@ fun number_before_reaching_sum( sum : int, l : int list ) =
 	headSum(l, 0, 1)
     end
 
+val DaysOfYear = 
+    [ 0  (* all dates between 1 and 31 are in january, the following dates follow each month*)
+     ,31 (* jan *)
+     ,28 (* feb *)
+     ,31 (* mar *)
+     ,30 (* apr *)
+     ,31 (* may *)
+     ,30 (* jun *)
+     ,31 (* jul *)
+     ,31 (* aug *)
+     ,30 (* sep *)
+     ,31 (* oct *)
+     ,30 (* nov *)
+     ,31 (* dec *)]
+   
+
+(* Rreturns what month a given day of the year is (1 for January, 2 for February, etc.) *)
+fun what_month ( dayOfYear : int ) = 
+    get_nth(Months, number_before_reaching_sum(dayOfYear, DaysOfYear))

@@ -241,3 +241,24 @@ val number_before_reaching_sum__more_complex2 =
 if number_before_reaching_sum( 7, [0,1,2,3,4,5] ) = 4
     then "pass"
     else "fail"
+
+(**********************)
+(* Tests for what_month *)
+(**********************)
+val what_month__low_bound =
+if ["January","February","March","December"] =
+   [what_month(1),what_month(32),what_month(60),what_month(335)]
+   then "pass"
+   else "fail"
+
+val what_moth__high_bound =
+if ["January","February","March","December"] =
+   [what_month(31),what_month(59),what_month(90),what_month(365)]
+   then "pass"
+   else "fail"
+
+val what_moth__mid_bound =
+if ["January","February","March","December"] =
+   [what_month(15),what_month(45),what_month(82),what_month(345)]
+   then "pass"
+   else "fail"
