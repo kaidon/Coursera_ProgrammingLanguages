@@ -186,3 +186,16 @@ val DaysOfYear =
 (* Rreturns what month a given day of the year is (1 for January, 2 for February, etc.) *)
 fun what_month ( dayOfYear : int ) = 
     get_nth(Months, number_before_reaching_sum(dayOfYear, DaysOfYear))
+
+
+(* Take two days of the year, day1 and day 2, returning an int list 
+   of the months between each date 
+
+   Result length is day2 - day1 + 1
+   When day1 > day2, returns 0
+*)
+fun month_range ( day1 : int, day2 : int ) =
+    if day1 > day2
+    then []
+    else number_before_reaching_sum(day1, DaysOfYear)
+         :: month_range(day1 + 1, day2)

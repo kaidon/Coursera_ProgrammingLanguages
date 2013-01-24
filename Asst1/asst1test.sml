@@ -262,3 +262,12 @@ if ["January","February","March","December"] =
    [what_month(15),what_month(45),what_month(82),what_month(345)]
    then "pass"
    else "fail"
+
+(**********************)
+(* Tests for what_month *)
+(**********************)
+val month_range__spans_months =
+if month_range(30,33) =
+   [1,1,2,2] (* last 2 days of January, first 2 of February *)
+   then "pass"
+   else "fail"
