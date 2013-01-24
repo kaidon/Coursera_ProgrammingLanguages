@@ -1,27 +1,34 @@
+(* Coursera Programming Languages
+   Sheldon Warkentin
+   January 23, 2012
+   
+   Assignment 1: Tests
+*)
+
 use "asst1.sml";
 
 (**********************)
 (* Tests for is_older *)
 (**********************)
 val is_older__d1_greater_d2 = if is_older( (2000,12,1), (2000,1,1) )
-then "pass"
-else "fail"
-
-val is_older__d1_less_d2 = if is_older( (2000,1,1), (2000,12,1) )
 then "fail"
 else "pass"
 
-val is_older__d1_greater_d2_yeardiff = if is_older( (2001,1,1), (2000,12,12) )
+val is_older__d1_less_d2 = if is_older( (2000,1,1), (2000,12,1) )
 then "pass"
 else "fail"
+
+val is_older__d1_greater_d2_yeardiff = if is_older( (2001,1,1), (2000,1,1) )
+then "fail"
+else "pass"
 
 val is_older__d1_greater_d2_monthdiff = if is_older( (2000,2,1), (2000,1,1) )
-then "pass"
-else "fail"
+then "fail"
+else "pass"
 
 val is_older__d1_greater_d2_daydiff = if is_older( (2000,1,31), (2000,1,10) )
-then "pass"
-else "fail"
+then "fail"
+else "pass"
 
 (**********************)
 (* Tests for number_in_month *)
@@ -246,19 +253,19 @@ if number_before_reaching_sum( 7, [0,1,2,3,4,5] ) = 4
 (* Tests for what_month *)
 (**********************)
 val what_month__low_bound =
-if ["January","February","March","December"] =
+if [1,2,3,12] =
    [what_month(1),what_month(32),what_month(60),what_month(335)]
    then "pass"
    else "fail"
 
 val what_moth__high_bound =
-if ["January","February","March","December"] =
+if [1,2,3,12] =
    [what_month(31),what_month(59),what_month(90),what_month(365)]
    then "pass"
    else "fail"
 
 val what_moth__mid_bound =
-if ["January","February","March","December"] =
+if [1,2,3,12] =
    [what_month(15),what_month(45),what_month(82),what_month(345)]
    then "pass"
    else "fail"
@@ -271,3 +278,24 @@ if month_range(30,33) =
    [1,1,2,2] (* last 2 days of January, first 2 of February *)
    then "pass"
    else "fail"
+
+(**********************)
+(* Tests for oldest   *)
+(**********************)
+
+val oldest__empty_is_none =
+if isSome (oldest([]))
+then "fail"
+else "pass"
+
+val oldest__duplicates = 
+if valOf (oldest([(2000,1,1),(2000,1,1),(2000,1,1)]))
+= (2000,1,1)
+then "pass"
+else "fail"
+
+val oldest_getsOldest =
+if valOf (oldest([(2000,1,1),(2001,1,1),(2002,1,1)]))
+= (2000,1,1)
+then "pass"
+else "fail"
