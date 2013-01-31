@@ -45,15 +45,31 @@ fun get_substitutions1 (substSet, match) =
 
 (* tail recursive version of get_substitutions1 *)
 fun get_substitutions2 (substSet, match) =
-    case substSet of
-	[] => []
-	   | (hdList::tailLists) => 
-	     let val toAppend = get_substitutions1(tailLists,match)
-	     in 
-		 case all_except_option(match,hdList) of
-		     NONE => toAppend
-		   | SOME matches =>  matches @ toAppend
-	     end
+    let fun aux(matchSets,acc) =
+	    case matchSets of
+		[] => acc
+	      | hdList::tlLists => 
+		let val headMatch = all_except_option(match,hdList)
+		in
+		    case headMatch of
+			NONE => aux(tlLists,acc)
+		      | SOME headMatch => aux(tlLists,acc @ headMatch)
+	      (* append the accumualtor on the match to keep order *)
+		end
+    in
+	aux(substSet,[])
+    end
+
+(* Takes a list of substitutions, and returns a list of full names
+  with only the first name substituted *)
+fun similar_names(substSet,{first=f,middle=m,last=l}) = 
+    let fun replaceFirst(fromNames) = 
+	    case fromNames of
+		[] => []
+	      | x::xs' => {first=x,middle=m,last=l} :: replaceFirst(xs')
+    in
+	{first=f,middle=m,last=l}::replaceFirst(get_substitutions2(substSet,f))
+    end
 
 (* you may assume that Num is always used with values 2, 3, ..., 10
    though it will not really come up *)

@@ -95,3 +95,28 @@ val get_substitutions2__repeatMatches =
 	["Jeffrey","Geoff","Jeffrey"] => "pass"
       | _ => "FAIL"
 
+(**********************)
+(* Tests for similar_names *)
+(**********************)
+
+val similar_names__originalOnly = 
+    case similar_names([],{first="A",middle="B",last="C"}) of
+	[{first="A",middle="B",last="C"}] => "pass"
+	| _ => "FAIL"
+
+val similar_names__no_match_originalOnly =
+    case similar_names(
+	    [["A","B"],["B","C"]]
+	   ,{first="Z",middle="B",last="C"}) of
+	[{first="Z",middle="B",last="C"}] => "pass"
+      | _ => "FAIL"
+
+val similar_names__many_match =    
+    case similar_names(
+	    [["A","B"],["B","C"],["B","D"]]
+	   ,{first="B",middle="C",last="D"}) of
+	[{first="B",middle="C",last="D"}
+	,{first="A",middle="C",last="D"}
+	,{first="C",middle="C",last="D"}
+	,{first="D",middle="C",last="D"}] => "pass"
+      | _ => "FAIL"
