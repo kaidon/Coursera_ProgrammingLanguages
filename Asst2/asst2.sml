@@ -26,11 +26,6 @@ fun all_except_option (except, inList) =
 				      NONE => NONE
 				    | SOME ys' => SOME (x::ys')
 
-(* Append two lists *)
-fun append (xs,ys) =
-    case xs of
-        [] => ys
-      | x::xs' => x :: append(xs',ys)
 
 (* Takes a string list list (a list of list of strings, 
  the substitutions) and a string s and returns a string list. 
@@ -45,7 +40,19 @@ fun get_substitutions1 (substSet, match) =
 	     in 
 		 case all_except_option(match,hdList) of
 		     NONE => toAppend
-		   | SOME matches =>  append(matches,toAppend)
+		   | SOME matches =>  matches @ toAppend
+	     end
+
+(* tail recursive version of get_substitutions1 *)
+fun get_substitutions2 (substSet, match) =
+    case substSet of
+	[] => []
+	   | (hdList::tailLists) => 
+	     let val toAppend = get_substitutions1(tailLists,match)
+	     in 
+		 case all_except_option(match,hdList) of
+		     NONE => toAppend
+		   | SOME matches =>  matches @ toAppend
 	     end
 
 (* you may assume that Num is always used with values 2, 3, ..., 10
