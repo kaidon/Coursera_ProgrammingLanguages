@@ -120,3 +120,22 @@ val similar_names__many_match =
 	,{first="C",middle="C",last="D"}
 	,{first="D",middle="C",last="D"}] => "pass"
       | _ => "FAIL"
+
+(**********************)
+(* Tests for card_color *)
+(**********************)
+val card_color__hearts = 
+    case card_color(Hearts,Ace) of Red => "pass" 
+				|_  => "FAIL"
+
+val card_color__diamonds = 
+    case card_color(Diamonds,Ace) of Red => "pass" 
+				|_  => "FAIL"
+
+val card_color__spades = 
+    case card_color(Spades,Ace) of Black => "pass" 
+				|_  => "FAIL"
+
+val card_color__clubs = 
+    case card_color(Clubs,Ace) of Black => "pass" 
+				|_  => "FAIL"

@@ -7,6 +7,10 @@
 
 (* Dan Grossman, Coursera PL, HW2 Provided Code *)
 
+(****************************************)
+(**************   PART 1 ****************)
+(****************************************)
+
 (* if you use this function to compare two strings (returns true if the same
    string), then you avoid several of the functions in problem 1 having
    polymorphic types that may be confusing *)
@@ -60,6 +64,11 @@ fun get_substitutions2 (substSet, match) =
 	aux(substSet,[])
     end
 
+(****************************************)
+(**************   PART 2 ****************)
+(****************************************)
+
+
 (* Takes a list of substitutions, and returns a list of full names
   with only the first name substituted *)
 fun similar_names(substSet,{first=f,middle=m,last=l}) = 
@@ -82,4 +91,8 @@ datatype move = Discard of card | Draw
 
 exception IllegalMove
 
-
+fun card_color (card) =
+    case card of
+	(Spades,_) => Black
+     | (Clubs,_) => Black
+     | (_,_) => Red
