@@ -91,8 +91,17 @@ datatype move = Discard of card | Draw
 
 exception IllegalMove
 
-fun card_color (card) =
+(* Return color of a card -- based on suit *)
+fun card_color card =
     case card of
 	(Spades,_) => Black
      | (Clubs,_) => Black
      | (_,_) => Red
+
+(* Returns the value of a card. NUmbered cards have their number, aces are 11, 
+   and the rest are 10 *)
+fun card_value card = 
+    case card of
+	(_,Ace) => 11
+      | (_,Num x) => x (* Num int *)
+      | (_,_) => 10

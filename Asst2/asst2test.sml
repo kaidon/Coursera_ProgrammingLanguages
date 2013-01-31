@@ -139,3 +139,45 @@ val card_color__spades =
 val card_color__clubs = 
     case card_color(Clubs,Ace) of Black => "pass" 
 				|_  => "FAIL"
+
+(**********************)
+(* Tests for card_value *)
+(**********************)
+
+(* convert a list of ranks with a suit into a list of cards *)
+fun toCard (rankList,asSuit) =
+ case rankList of
+     [] => []
+	| x::xs' => (asSuit,x)::toCard(xs',asSuit)
+
+(* exhaustive list of all supported ranks *)
+val allRanks = [Num 1, Num 2, Num 3, Num 4, Num 5, Num 6, 
+		Num 7, Num 8, Num 9, Num 10, 
+		Jack, Queen, King, Ace];
+
+(* calls card_value to get the rank number for each card *)
+fun getRanks cardList =
+    case cardList of
+	[] => []
+	   | x::xs' => card_value(x)::getRanks(xs')
+
+(* the exact rank for each card *)
+val expectedRanks = [1,2,3,4,5,6,7,8,9,10,10,10,10,11];
+
+(* exhaustively perform every combination of rank and suit to check rank *)
+val card_value__hearts = 
+    case getRanks(toCard(allRanks,Hearts)) = expectedRanks of
+	true => "pass"
+      | _ => "FAIL"
+val card_value__spades = 
+    case getRanks(toCard(allRanks,Spades)) = expectedRanks of
+	true => "pass"
+      | _ => "FAIL"
+val card_value__diamonds = 
+    case getRanks(toCard(allRanks,Diamonds)) = expectedRanks of
+	true => "pass"
+      | _ => "FAIL"
+val card_value__clubs = 
+    case getRanks(toCard(allRanks,Clubs)) = expectedRanks of
+	true => "pass"
+      | _ => "FAIL"
