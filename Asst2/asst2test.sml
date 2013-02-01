@@ -223,3 +223,16 @@ val all_same_color__aredifferent =
     case all_same_color [(Clubs,Jack),(Clubs,King),(Clubs,Queen)] of
 	true => "pass"
       | _ => "FAIL"
+
+(**********************)
+(* Tests for sum_cards *)
+(**********************)
+val sum_cards__empty_list =
+    case sum_cards [] of
+	0 => "pass"
+       |_=> "FAIL"
+
+val sum_cards__all_cards = 
+    case sum_cards(toCard(allRanks,Hearts)) of
+	96 => "pass" (* sum 1-10=55 + 30 (suits) + 11 (ace) *)
+      | _ => "FAIL"

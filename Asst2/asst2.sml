@@ -133,3 +133,14 @@ fun all_same_color cards =
       | x::[] => true
       | head::(neck::rest) => card_color(head) = card_color(neck)
 			      andalso all_same_color(neck::rest)
+
+
+(* Takes a list of cards, returning the sum of their valeus *)
+fun sum_cards cards =
+    let fun aux(xs,acc) =
+            case xs of
+                [] => acc
+              | i::xs' => aux(xs',card_value(i)+acc)
+    in
+        aux(cards,0)
+    end
