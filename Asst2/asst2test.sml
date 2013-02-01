@@ -9,6 +9,7 @@ use "asst2.sml";
 
 (**********************)
 (* Tests for all_except_option*)
+
 (**********************)
 val all_except_option__emptyIsNone = 
     case all_except_option("A",[]) of
@@ -179,5 +180,46 @@ val card_value__diamonds =
       | _ => "FAIL"
 val card_value__clubs = 
     case getRanks(toCard(allRanks,Clubs)) = expectedRanks of
+	true => "pass"
+      | _ => "FAIL"
+
+(**********************)
+(* Tests for remove_card *)
+(**********************)
+exception testex
+
+val remove_card__emptyList =
+    case remove_card([],(Clubs,King),testex) 
+	 handle testex => [(Hearts,Ace)] of
+	[(Hearts,Ace)] => "pass"
+      | _ => "FAIL"
+		 
+val remove_card__missing = 
+    case remove_card([(Clubs,Jack),(Clubs,Queen)],(Clubs,King),testex)
+	 handle testex => [(Hearts,Ace)] of
+	[(Hearts,Ace)] => "pass"
+      | _ => "FAIL"
+
+val remove_card__found = 
+    case remove_card([(Clubs,Jack),(Clubs,Queen)],(Clubs,Queen),testex)
+	 handle testex => [(Hearts,Ace)] of
+	[(Clubs,Jack)] => "pass"
+      | _ => "FAIL"
+
+(**********************)
+(* Tests for all_same_color *)
+(**********************)
+val all_same_color__empty = 
+    case all_same_color([]) of 
+	true => "pass"
+      | _ =>  "FAIL"
+
+val all_same_color__areSame =
+    case all_same_color [(Clubs,Jack),(Clubs,King),(Hearts,Queen)] of
+	true => "FAIL"
+      | _ => "pass"
+
+val all_same_color__aredifferent =
+    case all_same_color [(Clubs,Jack),(Clubs,King),(Clubs,Queen)] of
 	true => "pass"
       | _ => "FAIL"

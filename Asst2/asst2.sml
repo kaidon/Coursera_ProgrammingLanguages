@@ -105,3 +105,31 @@ fun card_value card =
 	(_,Ace) => 11
       | (_,Num x) => x (* Num int *)
       | (_,_) => 10
+
+(* Takes a list of cards cs, card c, and exception e, returnign a list
+   that has all elements of cs except c.
+   If c is in the list more than once, remove only the first one.
+   If c is not in the list, raise e *)
+fun remove_card (cards, c, e) =
+    let fun tryRemoveCard rest =
+	    case rest of
+		[] => NONE
+	      | (x::xs') => case c = x of
+				true => SOME xs'
+			      | false => case tryRemoveCard(xs') of
+					     NONE => NONE
+					   | SOME ys' => SOME(x::ys')
+    in
+	case tryRemoveCard(cards) of
+	    NONE => raise e
+	  | SOME removed => removed 
+    end
+
+(* Taking a list of cards, returns true if all are same color,
+   otherwise false. *)
+fun all_same_color cards = 
+    case cards of
+	[] => true
+      | x::[] => true
+      | head::(neck::rest) => card_color(head) = card_color(neck)
+			      andalso all_same_color(neck::rest)
