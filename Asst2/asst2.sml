@@ -170,3 +170,35 @@ fun score (cards,goal) =
 	    true => prelimScore div 2
 	  | _ => prelimScore	    
     end
+
+(* Run the game -- officiate
+   Takes a card list, move list, and goal.
+   Returns the score at the end of the game after processing moves.
+
+   Game starts with held-cards empty list.
+   Game ends if no more moves.
+   If card, c discarded, play continues with held cards not having c.
+   If card, c, is not in held-cards, raise IllegalMove
+   If player draws and card-list is empty, game over.
+      Else if drawing causes sum of held-cards to exceed goal, game over.
+      Else play continues with larger held-cards and smaller card-list.
+*)
+fun officiate (
+    cards
+  , moves
+  , goal) =
+    let fun nextState (deck, moveQueue, heldCards, e) =
+	    case moveQueue of
+		[] => heldCards
+	      | m::ms' => 
+		case (deck,m) of  
+		    (_,Discard c) => 
+		    nextState(deck,ms',remove_card(heldCards,c,e),e)
+		 |  ([],Draw) => heldCards
+		 | (c::cs',Draw) => 
+		   case sum_cards(heldCards)+card_value(c) > goal of
+		       true => c::heldCards
+		     | _ => nextState(cs',ms',c::heldCards,e)
+    in
+	score(nextState(cards,moves,[],IllegalMove),goal)
+    end

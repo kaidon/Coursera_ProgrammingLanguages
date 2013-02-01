@@ -264,3 +264,54 @@ val score__sumLessGoal_sameColor =
     case score([(Clubs, Num 5),(Clubs, Num 5)],15) of
 	2 => "pass" (* (15-10)/2=2 *)
      | _ => "FAIL"
+
+(**********************)
+(* Tests for officiate *)
+(**********************)
+fun provided_test1 () = (* correct behavior: raise IllegalMove *)
+    let val cards = [(Clubs,Jack),(Spades,Num(8))]
+	val moves = [Draw,Discard(Hearts,Jack)]
+    in
+	officiate(cards,moves,42)
+    end
+
+fun provided_test2 () = (* correct behavior: return 3 *)
+    let val cards = [(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)]
+	val moves = [Draw,Draw,Draw,Draw,Draw]
+    in
+ 	officiate(cards,moves,42)
+    end
+
+val provided_test1__test =
+    case provided_test1() handle IllegalMove => ~100 of
+	~100 => "pass"
+      | _ => "FAIL"
+
+val provided_test2__test =
+    case provided_test2() of
+	3 => "pass"
+      | _ => "FAIL"
+
+val deck = [(Clubs,Num 1),(Spades,Num 2),(Clubs,Num 6),(Spades,Num 7)];
+val moves =[Draw,Discard(Clubs,Num 1),Draw,Discard(Spades,Num 2),Draw,Draw];
+
+val officiate__emptyMoves =
+    case officiate(deck,[],2) of
+	1 => "pass"
+      | _ => "FAIL"
+		  
+
+val officiate__emptyDeck = 
+    case officiate([],moves,2) of
+	1 => "pass"
+      | _ => "FAIL"
+
+val officiate__deckAndMoves_goalMore =
+    case officiate(deck,moves,20) of
+	3 => "pass"
+      | _  => "FAIL"
+
+val officiate__deckAndMoves_goalLess =
+    case officiate(deck,moves,5) of
+	1 => "pass"
+      | _  => "FAIL"
