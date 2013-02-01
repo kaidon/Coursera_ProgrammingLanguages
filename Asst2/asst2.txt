@@ -1,0 +1,204 @@
+(* Coursera Programming Languages
+   Sheldon Warkentin
+   January 30, 2012
+   
+   Assignment 2: Questions 1-11
+*)
+
+(* Dan Grossman, Coursera PL, HW2 Provided Code *)
+
+(****************************************)
+(**************   PART 1 ****************)
+(****************************************)
+
+(* if you use this function to compare two strings (returns true if the same
+   string), then you avoid several of the functions in problem 1 having
+   polymorphic types that may be confusing *)
+fun same_string(s1 : string, s2 : string) =
+    s1 = s2
+
+(* Takes a string and a string list. Return NONE if the
+ string is not in the list, else return SOME lst where lst is
+ identical to the argument list except the string is not in it *)
+(* string * string list -> string list option *)
+fun all_except_option (except, inList) =
+      case inList of
+	  [] => NONE
+	| (x::xs') => case same_string(except, x) of
+			 true => SOME xs' (* assumes no more matches now *)
+		       | false => case all_except_option(except, xs') of
+				      NONE => NONE
+				    | SOME ys' => SOME (x::ys')
+
+
+(* Takes a string list list (a list of list of strings, 
+ the substitutions) and a string s and returns a string list. 
+ The result has all the strings that are in some list in substitutions that 
+ also has s, but s itself should not be in the result.*)
+(* string string list * string -> string list *)		
+fun get_substitutions1 (substSet, match) =
+    case substSet of
+	[] => []
+	   | (hdList::tailLists) => 
+	     let val toAppend = get_substitutions1(tailLists,match)
+	     in 
+		 case all_except_option(match,hdList) of
+		     NONE => toAppend
+		   | SOME matches =>  matches @ toAppend
+	     end
+
+(* tail recursive version of get_substitutions1 *)
+fun get_substitutions2 (substSet, match) =
+    let fun aux(matchSets,acc) =
+	    case matchSets of
+		[] => acc
+	      | hdList::tlLists => 
+		let val headMatch = all_except_option(match,hdList)
+		in
+		    case headMatch of
+			NONE => aux(tlLists,acc)
+		      | SOME headMatch => aux(tlLists,acc @ headMatch)
+	      (* append the accumualtor on the match to keep order *)
+		end
+    in
+	aux(substSet,[])
+    end
+
+(****************************************)
+(**************   PART 2 ****************)
+(****************************************)
+
+
+(* Takes a list of substitutions, and returns a list of full names
+  with only the first name substituted *)
+fun similar_names(substSet,{first=f,middle=m,last=l}) = 
+    let fun replaceFirst(fromNames) = 
+	    case fromNames of
+		[] => []
+	      | x::xs' => {first=x,middle=m,last=l} :: replaceFirst(xs')
+    in
+	{first=f,middle=m,last=l}::replaceFirst(get_substitutions2(substSet,f))
+    end
+
+(* you may assume that Num is always used with values 2, 3, ..., 10
+   though it will not really come up *)
+datatype suit = Clubs | Diamonds | Hearts | Spades
+datatype rank = Jack | Queen | King | Ace | Num of int 
+type card = suit * rank
+
+datatype color = Red | Black
+datatype move = Discard of card | Draw 
+
+exception IllegalMove
+
+(* Return color of a card -- based on suit *)
+fun card_color card =
+    case card of
+	(Spades,_) => Black
+     | (Clubs,_) => Black
+     | (_,_) => Red
+
+(* Returns the value of a card. NUmbered cards have their number, aces are 11, 
+   and the rest are 10 *)
+fun card_value card = 
+    case card of
+	(_,Ace) => 11
+      | (_,Num x) => x (* Num int *)
+      | (_,_) => 10
+
+(* Takes a list of cards cs, card c, and exception e, returnign a list
+   that has all elements of cs except c.
+   If c is in the list more than once, remove only the first one.
+   If c is not in the list, raise e *)
+fun remove_card (cards, c, e) =
+    let fun tryRemoveCard rest =
+	    case rest of
+		[] => NONE
+	      | (x::xs') => case c = x of
+				true => SOME xs'
+			      | false => case tryRemoveCard(xs') of
+					     NONE => NONE
+					   | SOME ys' => SOME(x::ys')
+    in
+	case tryRemoveCard(cards) of
+	    NONE => raise e
+	  | SOME removed => removed 
+    end
+
+(* Taking a list of cards, returns true if all are same color,
+   otherwise false. *)
+fun all_same_color cards = 
+    case cards of
+	[] => true
+      | x::[] => true
+      | head::(neck::rest) => card_color(head) = card_color(neck)
+			      andalso all_same_color(neck::rest)
+
+
+(* Takes a list of cards, returning the sum of their valeus *)
+fun sum_cards cards =
+    let fun aux(xs,acc) =
+            case xs of
+                [] => acc
+              | i::xs' => aux(xs',card_value(i)+acc)
+    in
+        aux(cards,0)
+    end
+
+(* Takes a list of cards, and a goal and computes the score *)
+(* sum = sum of value of cards
+   ---
+   if sum > goal:
+    preliminary score = 3 * (sum - goal)
+   else
+    preliminary score = goal - sum
+   -----
+   score = 
+    all cards are same color => preliminary score / 2
+    otherwise => preliminary score
+
+    ** NEEDS MORE COMPLEXITY *** 
+*)
+   
+fun score (cards,goal) = 
+    let val sum = sum_cards(cards)
+	val prelimScore = case sum > goal of
+			      true => 3 * (sum - goal)
+			    | _ => (goal - sum)
+    in
+	case all_same_color(cards) of
+	    true => prelimScore div 2
+	  | _ => prelimScore	    
+    end
+
+(* Run the game -- officiate
+   Takes a card list, move list, and goal.
+   Returns the score at the end of the game after processing moves.
+
+   Game starts with held-cards empty list.
+   Game ends if no more moves.
+   If card, c discarded, play continues with held cards not having c.
+   If card, c, is not in held-cards, raise IllegalMove
+   If player draws and card-list is empty, game over.
+      Else if drawing causes sum of held-cards to exceed goal, game over.
+      Else play continues with larger held-cards and smaller card-list.
+*)
+fun officiate (
+    cards
+  , moves
+  , goal) =
+    let fun nextState (deck, moveQueue, heldCards, e) =
+	    case moveQueue of
+		[] => heldCards
+	      | m::ms' => 
+		case (deck,m) of  
+		    (_,Discard c) => 
+		    nextState(deck,ms',remove_card(heldCards,c,e),e)
+		 |  ([],Draw) => heldCards
+		 | (c::cs',Draw) => 
+		   case sum_cards(heldCards)+card_value(c) > goal of
+		       true => c::heldCards
+		     | _ => nextState(cs',ms',c::heldCards,e)
+    in
+	score(nextState(cards,moves,[],IllegalMove),goal)
+    end
