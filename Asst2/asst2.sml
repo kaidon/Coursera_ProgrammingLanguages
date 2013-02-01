@@ -144,3 +144,29 @@ fun sum_cards cards =
     in
         aux(cards,0)
     end
+
+(* Takes a list of cards, and a goal and computes the score *)
+(* sum = sum of value of cards
+   ---
+   if sum > goal:
+    preliminary score = 3 * (sum - goal)
+   else
+    preliminary score = goal - sum
+   -----
+   score = 
+    all cards are same color => preliminary score / 2
+    otherwise => preliminary score
+
+    ** NEEDS MORE COMPLEXITY *** 
+*)
+   
+fun score (cards,goal) = 
+    let val sum = sum_cards(cards)
+	val prelimScore = case sum > goal of
+			      true => 3 * (sum - goal)
+			    | _ => (goal - sum)
+    in
+	case all_same_color(cards) of
+	    true => prelimScore div 2
+	  | _ => prelimScore	    
+    end

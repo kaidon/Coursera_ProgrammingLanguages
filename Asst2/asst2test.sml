@@ -236,3 +236,31 @@ val sum_cards__all_cards =
     case sum_cards(toCard(allRanks,Hearts)) of
 	96 => "pass" (* sum 1-10=55 + 30 (suits) + 11 (ace) *)
       | _ => "FAIL"
+
+(**********************)
+(* Tests for sum_cards *)
+(**********************)
+val score__empty =
+    case score([],10) of
+	5 => "pass" (* (10-0)/2 = 5 *)
+      | _ => "FAIL"
+
+val score__sumMoreGoal_diffColor =
+    case score([(Clubs, Num 5),(Hearts, Num 5)],5) of
+	15 => "pass" (* 3*(5+5-5)=15 *)
+     | _ => "FAIL"
+
+val score__sumMoreGoal_sameColor =
+    case score([(Clubs, Num 5),(Clubs, Num 5)],5) of
+	7 => "pass" (* (3*(5+5-5))/2=7 *)
+      | _ => "FAIL"
+
+val score__sumLessGoal_diffColor = 
+    case score([(Clubs, Num 5),(Hearts, Num 5)],15) of
+	5 => "pass" (* 15-10=5 *)
+     | _ => "FAIL"
+
+val score__sumLessGoal_sameColor = 
+    case score([(Clubs, Num 5),(Clubs, Num 5)],15) of
+	2 => "pass" (* (15-10)/2=2 *)
+     | _ => "FAIL"
