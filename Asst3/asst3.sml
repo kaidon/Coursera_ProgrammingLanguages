@@ -57,3 +57,12 @@ fun longest_string1 xs =
 		       true => x 
 		     | _ => last) 
 	       "" xs
+
+(* Same as longest_string1, but returns element closest to the end of
+   the list in the event of another match *)
+fun longest_string2 xs = 
+    List.foldl (fn (x,last) => 
+		   case String.size(x) >= String.size(last) of
+		       true => x 
+		     | _ => last) 
+	       "" xs

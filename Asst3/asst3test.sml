@@ -25,10 +25,17 @@ assertEquals (["Aa","Bb","BB","ZZZ"], only_capitals(stringList)
 (**********************)
 val stringList2 = ["a", "bb", "ccc", "dddd"];
 val stringList3 = ["dddd", "ccc", "bb", "a"];
-val stringList4 = ["a", "bbb", "ccc", "d"];
+val stringList4 = ["a", "bbb", "ccc", "zzz", "d"];
 
-assertEquals("",    longest_string1([]),          "longest_string empty");
+assertEquals("",    longest_string1([]),          "longest_string1 empty");
 assertEquals("dddd",longest_string1(stringList2), "longest_string1");
 assertEquals("dddd",longest_string1(stringList3), "longest_string1");
 assertEquals("bbb", longest_string1(stringList4), "longest_string1 dupes");
 
+(**********************)
+(* Tests for longest_string2 *)
+(**********************)
+assertEquals("",    longest_string2([]),          "longest_string2 empty");
+assertEquals("dddd",longest_string2(stringList2), "longest_string2");
+assertEquals("dddd",longest_string2(stringList3), "longest_string2");
+assertEquals("zzz", longest_string2(stringList4), "longest_string2 dupes");
