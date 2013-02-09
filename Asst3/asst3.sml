@@ -81,3 +81,8 @@ val longest_string3 =
 (* Simplication of longest_string_2 *)
 val longest_string4 =
     longest_string_helper (fn (sizeX,sizeL) => sizeX >= sizeL)
+
+(* returns the longest string in a list that starts with a capital letter.
+   Returns "" for an empty list. *)
+val longest_capitalized = longest_string_helper (fn (x,y) => x>y) 
+			  o only_capitals;

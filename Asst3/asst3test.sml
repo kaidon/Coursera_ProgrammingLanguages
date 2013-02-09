@@ -55,3 +55,11 @@ assertEquals("",    longest_string4([]),          "longest_string4 empty");
 assertEquals("dddd",longest_string4(stringList2), "longest_string4");
 assertEquals("dddd",longest_string4(stringList3), "longest_string4");
 assertEquals("zzz", longest_string4(stringList4), "longest_string4 dupes");
+
+(**********************)
+(* Tests for longest_capitalized *)
+(**********************)
+val stringList5 = ["a", "BBb", "CCc", "zzz", "d"];
+assertEquals("",    longest_capitalized([]),          "longest_capitalized");
+assertEquals("ZZZ", longest_capitalized(stringList),  "longest_capitalized");
+assertEquals("BBb", longest_capitalized(stringList5), "longest_capitalized");
