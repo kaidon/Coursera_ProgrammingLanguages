@@ -47,3 +47,13 @@ datatype typ = Anything
    Assumes all strings are size >= 1*)
 fun only_capitals xs = 
     List.filter (fn x => Char.isUpper(String.sub(x,0))) xs
+
+(* Given a string list, returns the longest string the the list.
+   Returns "" for an empty list.
+   If more than one match, returns element closest to start of list. *)
+fun longest_string1 xs = 
+    List.foldl (fn (x,last) => 
+		   case String.size(x) > String.size(last) of
+		       true => x 
+		     | _ => last) 
+	       "" xs
