@@ -39,3 +39,19 @@ assertEquals("",    longest_string2([]),          "longest_string2 empty");
 assertEquals("dddd",longest_string2(stringList2), "longest_string2");
 assertEquals("dddd",longest_string2(stringList3), "longest_string2");
 assertEquals("zzz", longest_string2(stringList4), "longest_string2 dupes");
+
+(**********************)
+(* Tests for longest_string3 *)
+(**********************)
+assertEquals("",    longest_string3([]),          "longest_string3 empty");
+assertEquals("dddd",longest_string3(stringList2), "longest_string3");
+assertEquals("dddd",longest_string3(stringList3), "longest_string3");
+assertEquals("bbb", longest_string3(stringList4), "longest_string3 dupes");
+
+(**********************)
+(* Tests for longest_string4 *)
+(**********************)
+assertEquals("",    longest_string4([]),          "longest_string4 empty");
+assertEquals("dddd",longest_string4(stringList2), "longest_string4");
+assertEquals("dddd",longest_string4(stringList3), "longest_string4");
+assertEquals("zzz", longest_string4(stringList4), "longest_string4 dupes");

@@ -66,3 +66,18 @@ fun longest_string2 xs =
 		       true => x 
 		     | _ => last) 
 	       "" xs
+
+fun longest_string_helper cond xs = 
+        List.foldl (fn (x,last) => 
+		   case cond(String.size(x), String.size(last)) of
+		       true => x 
+		     | _ => last) 
+	       "" xs
+
+(* Simplification of longest_string1 *)
+val longest_string3 =
+    longest_string_helper (fn (sizeX,sizeL) => sizeX > sizeL)
+
+(* Simplication of longest_string_2 *)
+val longest_string4 =
+    longest_string_helper (fn (sizeX,sizeL) => sizeX >= sizeL)
