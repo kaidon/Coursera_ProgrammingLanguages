@@ -34,10 +34,16 @@ fun g f1 f2 p =
 
 (**** for the challenge problem only ****)
 
+
 datatype typ = Anything
 	     | UnitT
 	     | IntT
 	     | TupleT of typ list
-	     | Datatype of string
+	     | Datatype of string;
 
-(**** you can put all your code here ****)
+(* Given a string list, returns string list with only strings 
+   that start with captail letter. 
+
+   Assumes all strings are size >= 1*)
+fun only_capitals xs = 
+    List.filter (fn x => Char.isUpper(String.sub(x,0))) xs
