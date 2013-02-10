@@ -69,3 +69,15 @@ assertEquals("BBb", longest_capitalized(stringList5), "longest_capitalized");
 (**********************)
 assertEquals("", rev_string(""), "rev_string null");
 assertEquals("edcba", rev_string("abcde"), "rev_string works");
+
+(**********************)
+(* Tests for first_answer*)
+(**********************)
+assertEquals(true
+	    , (first_answer (fn v => SOME false) [] handle NoAnswer => true)
+	    , "NoAnswer raised");
+
+assertEquals(2
+	    , (first_answer (fn v => if v>1 then SOME v else NONE)
+			    [1,2,3,4,5,6])
+	    , "first_answer exact match")

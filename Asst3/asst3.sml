@@ -91,3 +91,17 @@ val longest_capitalized = longest_string_helper (fn (x,y) => x>y)
    String lib functions used: {explode,implode)
 *)
 fun rev_string s = (String.implode o rev o String.explode) s
+
+(* The first argument should be applied to elements of the second argument 
+   in order until the first time it returns SOME v for some v and then v 
+   is the result of the call to first_answer.
+   
+   If the first argument returns NONE for all list elements, then 
+   first_answer should raise the exception NoAnswer. *)
+
+fun first_answer getAnswer lst =
+    case lst of
+	[] => raise NoAnswer
+      | x::xs => case getAnswer(x) of
+		    SOME v => v
+		  | _ => first_answer getAnswer xs
