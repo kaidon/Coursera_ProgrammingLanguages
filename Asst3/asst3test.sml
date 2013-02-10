@@ -100,10 +100,45 @@ fun intToList x =
       | 2 => SOME [4,5]
       | _ => NONE;
 
-assertEquals(SOME[1,2,3,4,5]
+assertEquals(SOME[4,5,1,2,3]
 	    , all_answers intToList [1,2]
 	    , "all_answers appends correctly");
 
 assertEquals(NONE
 	    , all_answers intToList [1,2,3,4]
 	    , "all_answers has NONE");
+
+(**********************)
+(* Tests for count_wildcards*)
+(**********************)
+val pat1 = Wildcard;
+val pat2 = Variable "varA";
+val pat3 = ConstP 10;
+val pat4 = TupleP[Wildcard, Variable "varB", ConstP 99
+		  , TupleP[Wildcard, Variable "varC"]
+		  , ConstructorP("con1", Wildcard)];
+val pat5 = ConstructorP("con2", Wildcard);
+
+assertEquals(1, count_wildcards(pat1), "count_wildcards");
+assertEquals(0, count_wildcards(pat2), "count_wildcards");
+assertEquals(0, count_wildcards(pat3), "count_wildcards");
+assertEquals(3, count_wildcards(pat4), "count_wildcards");
+assertEquals(1, count_wildcards(pat5), "count_wildcards");
+
+(**********************)
+(* Tests for count_wild_and_variable_lengths*)
+(**********************)
+assertEquals(1, count_wild_and_variable_lengths(pat1), "count_wildcards");
+assertEquals(4, count_wild_and_variable_lengths(pat2), "count_wildcards");
+assertEquals(0, count_wild_and_variable_lengths(pat3), "count_wildcards");
+assertEquals(11, count_wild_and_variable_lengths(pat4), "count_wildcards");
+assertEquals(1, count_wild_and_variable_lengths(pat5), "count_wildcards");
+
+(**********************)
+(* Tests for count_some_var*)
+(**********************)
+assertEquals(0, count_some_var( ("var",pat1)), "count_some_var");
+assertEquals(1, count_some_var( ("varA",pat2)), "count_some_var");
+assertEquals(0, count_some_var( ("varB",pat2)), "count_some_var");
+assertEquals(1, count_some_var( ("varC",pat4)), "count_some_var");
+assertEquals(0, count_some_var( ("varZ",pat4)), "count_some_var");

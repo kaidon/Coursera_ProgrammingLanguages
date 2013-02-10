@@ -128,3 +128,26 @@ fun all_answers getAnswers lst =
     in
 	appendAnswers([], SOME [], lst)
     end
+
+(* Count all Wildcard values in a pattern *)
+fun count_wildcards p = 
+    g 
+	(fn wildCard => 1)  (* Counting Wildcard, just return 1 *)
+	(fn variable => 0)  (* Variables don't count *)
+	p
+
+(* Count all Wildcard occurances, as well as the sum of the string lengths
+   of all variable name lengths *)
+fun count_wild_and_variable_lengths p =
+    g
+	(fn wildCard => 1 ) (*Counting wildcard occurrence *)
+	(fn variable => String.size(variable)) (* length of var name *)
+	p
+	
+(* With a string and pattern, retursn number of times the string appears
+   as a variable in the pattern *)
+fun count_some_var (matchVariable,p) =
+    g
+	(fn wildCard => 0) (* dont' care about wildcards *)
+	(fn variable => if variable = matchVariable then 1 else 0)
+	p
