@@ -105,3 +105,26 @@ fun first_answer getAnswer lst =
       | x::xs => case getAnswer(x) of
 		    SOME v => v
 		  | _ => first_answer getAnswer xs
+
+(* The first argument should be applied to elements of the second
+   argument.
+
+  If it returns NONE for any element, then the result for all_answers is NONE. 
+  Else the calls to the first argument will have produced SOME lst1, 
+  SOME lst2, ... SOME lstn and the result of all_answers is SOME lst where 
+  lst is lst1, lst2, ..., lstn appended together (order doesn't matter). *)
+
+
+fun all_answers getAnswers lst =
+    let fun appendAnswers ( allAns, lastAns, qs ) =
+	    case lastAns of
+		NONE => NONE
+	      | SOME a =>  case qs of 
+			  [] => SOME (a @ allAns) (* no, return ans *)
+			    | q::qs' =>  (*append last answer, and get next *)
+			      appendAnswers (a @ allAns
+					    , getAnswers q
+					    , qs')	
+    in
+	appendAnswers([], SOME [], lst)
+    end

@@ -80,4 +80,30 @@ assertEquals(true
 assertEquals(2
 	    , (first_answer (fn v => if v>1 then SOME v else NONE)
 			    [1,2,3,4,5,6])
-	    , "first_answer exact match")
+	    , "first_answer exact match");
+
+assertEquals(10
+	    , (first_answer (fn v => if v>1 then SOME v else NONE)
+			    [1,~1,~2] handle NoAnswer =>  10)
+	    , "first_answer exact match");
+
+(**********************)
+(* Tests for all_answers*)
+(**********************)
+assertEquals(SOME[]
+	    ,(all_answers (fn v => SOME[v,v,v]) [])
+	    , "all_answers empty list");
+
+fun intToList x = 
+    case x of
+	1 => SOME [1,2,3]
+      | 2 => SOME [4,5]
+      | _ => NONE;
+
+assertEquals(SOME[1,2,3,4,5]
+	    , all_answers intToList [1,2]
+	    , "all_answers appends correctly");
+
+assertEquals(NONE
+	    , all_answers intToList [1,2,3,4]
+	    , "all_answers has NONE");
