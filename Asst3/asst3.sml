@@ -86,3 +86,8 @@ val longest_string4 =
    Returns "" for an empty list. *)
 val longest_capitalized = longest_string_helper (fn (x,y) => x>y) 
 			  o only_capitals;
+
+(* reverse a string 
+   String lib functions used: {explode,implode)
+*)
+fun rev_string s = (String.implode o rev o String.explode) s

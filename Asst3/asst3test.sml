@@ -5,7 +5,7 @@ fun assertTrue (expr, failDesc) =
 	true => "pass"
       | _  =>  "!FAIL! " ^ failDesc
 
-fun assertEquals (expect,result, failDesc) =
+fun assertEquals (expect, result, failDesc) =
     case expect=result of
 	true => "pass"
       | _ => "!FAIL! " ^ failDesc
@@ -63,3 +63,9 @@ val stringList5 = ["a", "BBb", "CCc", "zzz", "d"];
 assertEquals("",    longest_capitalized([]),          "longest_capitalized");
 assertEquals("ZZZ", longest_capitalized(stringList),  "longest_capitalized");
 assertEquals("BBb", longest_capitalized(stringList5), "longest_capitalized");
+
+(**********************)
+(* Tests for rev_string *)
+(**********************)
+assertEquals("", rev_string(""), "rev_string null");
+assertEquals("edcba", rev_string("abcde"), "rev_string works");
