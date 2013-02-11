@@ -178,8 +178,23 @@ assertEquals(SOME [ ("c", Tuple [Unit, Unit]),
                     ("a", Const 1) ]
 	    , match(
 		  Tuple [Const 1, Constructor("foo", Const 2), Tuple [Unit, Unit]],
-		  TupleP [Variable "a", Variable "b", Variable "c"])
+ 		  TupleP [Variable "a", Variable "b", Variable "c"])
 	    , "match all variables");
 assertEquals(SOME[("a", Unit)]
 	    , match( Tuple [Const 1, Unit], TupleP [Wildcard, Variable "a"])
 	    , "match Wildcard takes value");
+
+(**********************)
+(*   Tests for first_match *)
+(**********************)
+assertEquals(NONE
+	    , first_match Unit []
+	    , "first_match empty list");
+assertEquals(SOME[]
+	    , first_match Unit [ConstP 5, Wildcard, UnitP]
+	    , "first_match has matches, but all empty");
+assertEquals(SOME[("a", Unit)]
+	    , first_match (Tuple[Const 4, Unit])
+			  ([UnitP, ConstP 5, TupleP [ConstP 4, Variable "a"]])
+	    , "first_match simple");
+

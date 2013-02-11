@@ -209,3 +209,12 @@ fun match valuPatternPair =
 
       (* The rest results in no matches *)
       | _  => NONE			 		      
+
+(* takes a valu and list of patterns, returning (string * value) list  option
+   NONE if no pattern in the list matches 
+   SOME lst where lst is the list of bindings for the first pattern in 
+   the list that matches. *)
+
+fun first_match aValu patterns =
+    SOME (first_answer (fn p => match(aValu,p)) patterns)
+    handle NoAnswer => NONE
