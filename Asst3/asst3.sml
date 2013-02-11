@@ -144,7 +144,7 @@ fun count_wild_and_variable_lengths p =
 	(fn variable => String.size(variable)) (* length of var name *)
 	p
 	
-(* With a string and pattern, retursn number of times the string appears
+(* With a string and pattern, returns number of times the string appears
    as a variable in the pattern *)
 fun count_some_var (matchVariable,p) =
     g
@@ -161,8 +161,7 @@ fun check_pat p =
 		Variable x => x::[]
 	      | TupleP ps  => List.foldl
 				  (fn (pat,acc) => getAllVarNames(pat)@acc)
-				  []
-				  ps
+				  []  ps
 	      | ConstructorP(_,p) => getAllVarNames(p)@[]
 	      | _                 => []
 	fun hasDupes varNames = (* pop each variable off list, seeing if it *)
@@ -176,3 +175,37 @@ fun check_pat p =
 	hasDupes(getAllVarNames(p)) = false (* negate it, no dupes = pass *)
     end   
 	
+(*  takes a valu*pattern, returning a (string*value) list option.
+    NONE if pattern does not match.
+    SOME lst, where lst is list of bindings if it does.
+
+    Note: if value matches but pattern has no patterns of form Variable s, then
+          result is SOME[]. *)
+
+fun match valuPatternPair =
+    case valuPatternPair of 
+	(* Const matches exactly on int *)	
+	(Const x, ConstP y) => 
+	if x=y then SOME[] else NONE   
+
+      (* Unit matches on constructor *)
+      | (Unit, UnitP) => SOME[]
+
+      (* Tuples match on size, and contents -- recursively *)
+      | (Tuple tv, TupleP tp) => 
+	if List.length(tv) = List.length(tp) 
+	then all_answers match (ListPair.zip(tv,tp)) 
+	else NONE
+		 
+      (* Constructor matches on name, then valu * pattern *)
+      | (Constructor(sv,v), ConstructorP(sp,p)) =>
+	if sv = sp then match(v,p) else NONE
+
+      (* Variable matches on anything *)
+      | (v,Variable x) => SOME[(x,v)]
+
+      (* Wildcard matches on anything else *)
+      | (_,Wildcard) => SOME[]
+
+      (* The rest results in no matches *)
+      | _  => NONE			 		      

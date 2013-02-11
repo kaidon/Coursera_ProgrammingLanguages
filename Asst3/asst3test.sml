@@ -131,7 +131,7 @@ assertEquals(1, count_wildcards(pat5), "count_wildcards");
 assertEquals(1, count_wild_and_variable_lengths(pat1), "count_wildcards");
 assertEquals(4, count_wild_and_variable_lengths(pat2), "count_wildcards");
 assertEquals(0, count_wild_and_variable_lengths(pat3), "count_wildcards");
-assertEquals(11, count_wild_and_variable_lengths(pat4), "count_wildcards");
+assertEquals(11,count_wild_and_variable_lengths(pat4), "count_wildcards");
 assertEquals(1, count_wild_and_variable_lengths(pat5), "count_wildcards");
 
 (**********************)
@@ -144,7 +144,7 @@ assertEquals(1, count_some_var( ("varC",pat4)), "count_some_var");
 assertEquals(0, count_some_var( ("varZ",pat4)), "count_some_var");
 
 (**********************)
-(* Tests for count_some_var*)
+(* Tests for check_pat*)
 (**********************)
 val pat6 = TupleP[Variable "varA", Variable "varB", Variable "varC"];
 val pat7 = TupleP[Variable "varA", Variable "varB", Variable "varA"];
@@ -153,3 +153,33 @@ assertEquals(true, check_pat(pat1), "check_pat true for pattern with no vars");
 assertEquals(true, check_pat(pat4), "check_pat with more complex pattern");
 assertEquals(true, check_pat(pat6), "check_pat all distinct");
 assertEquals(false, check_pat(pat7), "check_pat non distinct");
+
+(**********************)
+(*   Tests for match  *)
+(**********************)
+assertEquals(SOME [], match( Const(5), pat1),"match Wildcard");
+assertEquals(SOME [], match( Unit, pat1),"match Wildcard");
+assertEquals(SOME [], match( Tuple[Unit,Const(5)],pat1), "match Wildcard");
+assertEquals(SOME [], match( Constructor("a",Const(5)),pat1), "match Wildcard");
+assertEquals(SOME[("a", Unit)]
+	    , match(Tuple[Const 4, Unit], TupleP[ConstP 4, Variable "a"])
+	    , "match simple");
+assertEquals(NONE
+	    , match( Tuple [Const 3, Unit],TupleP [ConstP 4, Variable "a"])
+	    , "match Const vals don't match");
+assertEquals(SOME []
+	    , match(Constructor("abc" , Const 1),ConstructorP("abc", ConstP 1))
+	    , "match Contructor ids match");
+assertEquals(NONE
+	    , match(Constructor("DEF" , Const 1),ConstructorP("abc", ConstP 1))
+	    , "match Contructor ids don't match");
+assertEquals(SOME [ ("c", Tuple [Unit, Unit]), 
+                    ("b", Constructor("foo", Const 2)),
+                    ("a", Const 1) ]
+	    , match(
+		  Tuple [Const 1, Constructor("foo", Const 2), Tuple [Unit, Unit]],
+		  TupleP [Variable "a", Variable "b", Variable "c"])
+	    , "match all variables");
+assertEquals(SOME[("a", Unit)]
+	    , match( Tuple [Const 1, Unit], TupleP [Wildcard, Variable "a"])
+	    , "match Wildcard takes value");
