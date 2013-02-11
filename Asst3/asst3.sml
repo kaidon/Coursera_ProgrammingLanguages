@@ -151,3 +151,28 @@ fun count_some_var (matchVariable,p) =
 	(fn wildCard => 0) (* dont' care about wildcards *)
 	(fn variable => if variable = matchVariable then 1 else 0)
 	p
+
+(* Checks if all variables appearing in a pattern are distinct from
+   one another.
+   Constructor names do not matter *)
+fun check_pat p =
+    let fun getAllVarNames p = (* find all variable strings *)
+	    case p of
+		Variable x => x::[]
+	      | TupleP ps  => List.foldl
+				  (fn (pat,acc) => getAllVarNames(pat)@acc)
+				  []
+				  ps
+	      | ConstructorP(_,p) => getAllVarNames(p)@[]
+	      | _                 => []
+	fun hasDupes varNames = (* pop each variable off list, seeing if it *)
+	    case varNames of    (* exists in the remainder of the list *)
+		[] => false
+	      | x::xs => List.exists
+			     (fn inList => inList=x)
+			     xs
+			 orelse hasDupes(xs)				 
+    in
+	hasDupes(getAllVarNames(p)) = false (* negate it, no dupes = pass *)
+    end   
+	

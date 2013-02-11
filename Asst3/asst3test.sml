@@ -142,3 +142,14 @@ assertEquals(1, count_some_var( ("varA",pat2)), "count_some_var");
 assertEquals(0, count_some_var( ("varB",pat2)), "count_some_var");
 assertEquals(1, count_some_var( ("varC",pat4)), "count_some_var");
 assertEquals(0, count_some_var( ("varZ",pat4)), "count_some_var");
+
+(**********************)
+(* Tests for count_some_var*)
+(**********************)
+val pat6 = TupleP[Variable "varA", Variable "varB", Variable "varC"];
+val pat7 = TupleP[Variable "varA", Variable "varB", Variable "varA"];
+
+assertEquals(true, check_pat(pat1), "check_pat true for pattern with no vars");
+assertEquals(true, check_pat(pat4), "check_pat with more complex pattern");
+assertEquals(true, check_pat(pat6), "check_pat all distinct");
+assertEquals(false, check_pat(pat7), "check_pat non distinct");
