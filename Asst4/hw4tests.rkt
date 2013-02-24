@@ -51,6 +51,18 @@
 (equal? (list 3 6) (sequence 3 8 3))
 (equal? null (sequence 3 2 1))
 
+;; Tests for 2.
+(equal? (list "abb" "bbb" "cbb") 
+        (string-append-map (list "a" "b" "c") "bb"))
+(equal? (list "a" "b" "c")
+        (string-append-map (list "a" "b" "c") ""))
+
+;; Tests for 3.
+(equal? 3 (list-nth-mod (list 1 2 3 4 5) 19))
+(equal? 2 (list-nth-mod (list 1 2 3 4 5) 18))
+(equal? 1 (list-nth-mod (list 1 2 3 4 5) 17))
+(equal? 0 (list-nth-mod (list 1 2 3 4 5) 16))
+
 ; These definitions will work only after you do some of the problems
 ; so you need to comment them out until you are ready.
 ; Add more tests as appropriate, of course.
