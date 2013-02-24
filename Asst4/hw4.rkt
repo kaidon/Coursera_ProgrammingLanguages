@@ -21,4 +21,8 @@
         [(null? xs) (error "list-nth-mod: empty list")]
         [(car (list-tail xs (remainder n (length xs))))]))
 
-
+;4. stream-for-n-steps (s,n)
+(define (stream-for-n-steps s n)
+  (if (equal? 0 n) 
+      null
+      (cons (car (s)) (stream-for-n-steps s (- n 1)))))
