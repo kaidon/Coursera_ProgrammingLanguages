@@ -32,11 +32,17 @@
   (letrec ([f (lambda (x) 
                 (cons 
                  (if (equal? (modulo x 5) 0) (- 0 x) x)
-                     (lambda () (f (+ x 1)))))])
-(lambda () (f 1))))
+                 (lambda () (f (+ x 1)))))])
+    (lambda () (f 1))))
 
 ;6. dan-then-dog
 (define dan-then-dog
   (letrec ([f (lambda (x) 
                 (cons x (lambda () (f (if (equal? x "dan.jpg") "dog.jpg" "dan.jpg")))))])
     (lambda () (f "dan.jpg"))))
+
+;7. stream-add-zero (s)
+(define (stream-add-zero s)  
+  (letrec ([f (lambda () 
+                (cons (cons 0 (car (s))) (stream-add-zero (cdr (s)))))])
+    (lambda () (f))))
