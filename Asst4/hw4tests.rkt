@@ -95,6 +95,17 @@
 (equal? (cons 5 6) (vector-assoc 5 testV))
 (equal? (cons "a" "b") (vector-assoc "a" (vector (cons "a" "b") (cons "b" "c"))))
 
+;; Tests fo 10
+(define testL (list (cons 1 2) (cons 3 4) (cons 5 6)))
+(define ca (cached-assoc testL 2))
+(equal? (cons 1 2) (ca 1))
+(equal? (cons 1 2) (ca 1))
+(equal? (cons 3 4) (ca 3))
+(equal? (cons 3 4) (ca 3))
+(equal? (cons 5 6) (ca 5))
+(equal? (cons 5 6) (ca 5))
+
+
 ; These definitions will work only after you do some of the problems
 ; so you need to comment them out until you are ready.
 ; Add more tests as appropriate, of course.

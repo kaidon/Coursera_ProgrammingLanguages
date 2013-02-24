@@ -58,10 +58,27 @@
 ;9. vector-assoc (v,vec)
 (define (vector-assoc v vec)
   (letrec ([f (lambda (pos)
-                (cond [(= pos (vector-length vec)) #f]
+                (cond [(>= pos (vector-length vec)) #f]
                       [(not (pair? (vector-ref vec pos))) (f (+ 1 pos))]
                       [(equal? v (car (vector-ref vec pos))) (vector-ref vec pos)]
                       [#t (f (+ 1 pos))]
-                ))])
+                      ))])
     (f 0)))
-           
+
+;10. cached-assoc (xs, n)
+(define (cached-assoc xs n)
+  (letrec ([memo (make-vector n #f)]
+           [cacheIndex 0]
+           [f (lambda (key)
+                (let ([ans (vector-assoc key memo)])
+                  (if ans          ;non-#f is #t!                      
+                      ans    ;answer exists                  
+                      (let ([new-ans (assoc key xs)])
+                        (begin                               
+                          (vector-set! memo cacheIndex new-ans)
+                          (set! cacheIndex (modulo (+ 1 cacheIndex) n))
+                          new-ans)))))] ;answer cached now
+           )
+    (lambda (x) (f x))))
+
+
