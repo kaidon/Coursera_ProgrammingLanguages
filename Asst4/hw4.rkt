@@ -25,4 +25,12 @@
 (define (stream-for-n-steps s n)
   (if (equal? 0 n) 
       null
-      (cons (car (s)) (stream-for-n-steps s (- n 1)))))
+      (cons (car (s)) (stream-for-n-steps (cdr (s)) (- n 1)))))
+
+;5. funny-number-stream
+(define funny-number-stream
+  (letrec ([f (lambda (x) 
+                (cons 
+                 (if (equal? (modulo x 5) 0) (- 0 x) x)
+                     (lambda () (f (+ x 1)))))])
+(lambda () (f 1))))
