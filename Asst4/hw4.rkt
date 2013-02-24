@@ -34,3 +34,9 @@
                  (if (equal? (modulo x 5) 0) (- 0 x) x)
                      (lambda () (f (+ x 1)))))])
 (lambda () (f 1))))
+
+;6. dan-then-dog
+(define dan-then-dog
+  (letrec ([f (lambda (x) 
+                (cons x (lambda () (f (if (equal? x "dan.jpg") "dog.jpg" "dan.jpg")))))])
+    (lambda () (f "dan.jpg"))))

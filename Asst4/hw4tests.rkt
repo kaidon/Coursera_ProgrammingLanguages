@@ -74,6 +74,10 @@
 (equal? (list 1 2 3 4 -5 6 7 8 9 -10) 
         (stream-for-n-steps funny-number-stream 10))
 
+;; Tests for 6
+(equal? (list "dan.jpg" "dog.jpg" "dan.jpg" "dog.jpg" "dan.jpg" "dog.jpg")
+        (stream-for-n-steps dan-then-dog 6))
+
 ; These definitions will work only after you do some of the problems
 ; so you need to comment them out until you are ready.
 ; Add more tests as appropriate, of course.
