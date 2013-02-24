@@ -16,13 +16,9 @@
   (map (lambda (s) (string-append s suffix)) xs))
 
 ;3. list-nth-mod (xs, n)
-(define (list-nth-mod xs n)
-  (letrec ([remainderN (remainder n (length xs))]
-           [f (lambda (i rest)
-                (cond [(> 0 n) (error "list-nth-mod: negative number")]
-                      [(null? xs) (error "list-nth-mod: empty list")]
-                      [(equal? (car rest) remainderN) i]
-                      [(f (+ i 1) (list-tail xs (+ i 1 )))]))])
-(f 0 xs)))
+(define (list-nth-mod xs n)  
+  (cond [(> 0 n) (error "list-nth-mod: negative number")]
+        [(null? xs) (error "list-nth-mod: empty list")]
+        [(car (list-tail xs (remainder n (length xs))))]))
 
 

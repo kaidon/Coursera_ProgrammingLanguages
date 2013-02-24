@@ -58,28 +58,8 @@
         (string-append-map (list "a" "b" "c") ""))
 
 ;; Tests for 3.
-(equal? 3 (list-nth-mod (list 1 2 3 4 5) 19))
-(equal? 2 (list-nth-mod (list 1 2 3 4 5) 18))
-(equal? 1 (list-nth-mod (list 1 2 3 4 5) 17))
-(equal? 0 (list-nth-mod (list 1 2 3 4 5) 16))
-
-; These definitions will work only after you do some of the problems
-; so you need to comment them out until you are ready.
-; Add more tests as appropriate, of course.
-
-(define nums (sequence 0 5 1))
-
-
-(define files (string-append-map 
-               (list "dan" "dog" "curry" "dog2") 
-               ".jpg"))
-
-(define funny-test (stream-for-n-steps funny-number-stream 16))
-
-; a zero-argument function: call (one-visual-test) to open the graphics window, etc.
-(define (one-visual-test)
-  (place-repeatedly (open-window) 0.5 (cycle-lists nums files) 27))
-
-; similar to previous but uses only two files and one position on the grid
-(define (visual-zero-only)
-  (place-repeatedly (open-window) 0.5 (stream-add-zero dan-then-dog) 27))
+(equal? 5 (list-nth-mod (list 1 2 3 4 5) 19))
+(equal? 4 (list-nth-mod (list 1 2 3 4 5) 18))
+(equal? 3 (list-nth-mod (list 1 2 3 4 5) 17))
+(equal? 2 (list-nth-mod (list 1 2 3 4 5) 16))
+(equal? 1 (list-nth-mod (list 1 2 3 4 5) 15))
