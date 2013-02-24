@@ -1,5 +1,25 @@
-fun is_older (date1 : int*int*int, date2 : int*int*int) =    
-    let val days1 = (#1 date1)*365 + (#2 date1)*31 + (#3 date1)
-	val days2 = (#1 date2)*365 + (#2 date2)*31 + (#3 date2)
-    in days1 < days2
-    end
+signature COUNTER =
+sig
+    type t
+    val newCounter : int -> t
+    val increment : t -> t
+    val first_larger : t * t -> bool
+end
+
+structure NoNegativeCounter :> COUNTER = 
+struct
+
+exception InvariantViolated
+
+type t = int
+
+fun newCounter i = if i <= 0 then 1 else i
+
+fun increment i = i + 1
+
+fun first_larger (i1,i2) =
+    if i1 <= 0 orelse i2 <= 0
+    then raise InvariantViolated
+    else (i1 - i2) > 0
+
+end
