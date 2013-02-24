@@ -23,7 +23,7 @@
 
 ;4. stream-for-n-steps (s,n)
 (define (stream-for-n-steps s n)
-  (if (equal? 0 n) 
+  (if (= 0 n) 
       null
       (cons (car (s)) (stream-for-n-steps (cdr (s)) (- n 1)))))
 
@@ -31,7 +31,7 @@
 (define funny-number-stream
   (letrec ([f (lambda (x) 
                 (cons 
-                 (if (equal? (modulo x 5) 0) (- 0 x) x)
+                 (if (= (modulo x 5) 0) (- 0 x) x)
                  (lambda () (f (+ x 1)))))])
     (lambda () (f 1))))
 
@@ -49,8 +49,19 @@
 
 ;8. cycle-lists (xs,ys)
 (define (cycle-lists xs ys)
-    (letrec ([f (lambda (n) 
+  (letrec ([f (lambda (n) 
                 (cons 
                  (cons (list-nth-mod xs n) (list-nth-mod ys n))                 
                  (lambda () (f (+ n 1)))))])
     (lambda () (f 0))))
+
+;9. vector-assoc (v,vec)
+(define (vector-assoc v vec)
+  (letrec ([f (lambda (pos)
+                (cond [(= pos (vector-length vec)) #f]
+                      [(not (pair? (vector-ref vec pos))) (f (+ 1 pos))]
+                      [(equal? v (car (vector-ref vec pos))) (vector-ref vec pos)]
+                      [#t (f (+ 1 pos))]
+                ))])
+    (f 0)))
+           

@@ -87,6 +87,14 @@
 (equal? (list (cons 1 "a") (cons 2 "b") (cons 3 "a") (cons 1 "b"))
   (stream-for-n-steps (cycle-lists (list 1 2 3) (list "a" "b")) 4))
 
+;; Tests for 9
+(define testV (vector (cons 1 2) (cons 3 4) (cons 5 6)))
+(equal? #f (vector-assoc 0 testV))
+(equal? (cons 1 2) (vector-assoc 1 testV))
+(equal? (cons 3 4) (vector-assoc 3 testV))
+(equal? (cons 5 6) (vector-assoc 5 testV))
+(equal? (cons "a" "b") (vector-assoc "a" (vector (cons "a" "b") (cons "b" "c"))))
+
 ; These definitions will work only after you do some of the problems
 ; so you need to comment them out until you are ready.
 ; Add more tests as appropriate, of course.
