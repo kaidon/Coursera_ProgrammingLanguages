@@ -46,3 +46,11 @@
   (letrec ([f (lambda () 
                 (cons (cons 0 (car (s))) (stream-add-zero (cdr (s)))))])
     (lambda () (f))))
+
+;8. cycle-lists (xs,ys)
+(define (cycle-lists xs ys)
+    (letrec ([f (lambda (n) 
+                (cons 
+                 (cons (list-nth-mod xs n) (list-nth-mod ys n))                 
+                 (lambda () (f (+ n 1)))))])
+    (lambda () (f 0))))

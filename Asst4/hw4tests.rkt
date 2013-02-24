@@ -58,6 +58,7 @@
         (string-append-map (list "a" "b" "c") ""))
 
 ;; Tests for 3.
+(equal? 1 (list-nth-mod (list 1 2 3 4 5) 20))
 (equal? 5 (list-nth-mod (list 1 2 3 4 5) 19))
 (equal? 4 (list-nth-mod (list 1 2 3 4 5) 18))
 (equal? 3 (list-nth-mod (list 1 2 3 4 5) 17))
@@ -81,6 +82,10 @@
 ;; Tests for 7
 (equal? (list (cons 0 1) (cons 0 2) (cons 0 3))
         (stream-for-n-steps (stream-add-zero funny-number-stream) 3))
+
+;; Tests for 8
+(equal? (list (cons 1 "a") (cons 2 "b") (cons 3 "a") (cons 1 "b"))
+  (stream-for-n-steps (cycle-lists (list 1 2 3) (list "a" "b")) 4))
 
 ; These definitions will work only after you do some of the problems
 ; so you need to comment them out until you are ready.
