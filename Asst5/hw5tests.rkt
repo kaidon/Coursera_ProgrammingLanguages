@@ -49,17 +49,16 @@
 ;mlet
 (equal? (int 2) (eval-exp (mlet "a" (int 1) (add (int 1) (var "a")))))
 
-;call
 
-;fun
-(eval-exp
- (mlet "fnc"
-       (fun "f1" "x" 
-            (ifgreater (isaunit (var "x")) (int 0) 
-                       (int 0) 
-                       (add (fst (var "x")) (call (var "f1") (snd (var "x"))))))
-       (call (var "fnc") (apair (int 1) (apair (int 2) (apair (int 3) (aunit))))))
- )
+;fun recurive with call
+(equal? (int 11) (eval-exp 
+ (mlet "func"
+       (fun "f1" "x"
+            (ifgreater (var "x") (int 10)
+                       (var "x")
+                       (begin                          
+                         (call (var "f1") (add (var "x") (int 1))))))
+       (call (var "func") (int 0)))))
 
 ; a test case that uses problems 1, 2, and 4
 ; should produce (list (int 10) (int 11) (int 16))
