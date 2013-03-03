@@ -76,6 +76,15 @@
 (equal?
  (mlet "a" (int 1) (mlet "b" (int 2) (int 3)))
  (mlet* (list (cons "a" (int 1)) (cons "b" (int 2))) (int 3)))
+
+;ifeq
+(equal?
+ (int 10) 
+ (eval-exp (ifeq (int 1) (int 2) (int 0) (int 10))))
+
+(equal?
+ (int 0) 
+ (eval-exp (ifeq (int 2) (int 2) (int 0) (int 10))))
                
 ; a test case that uses problems 1, 2, and 4
 ; should produce (list (int 10) (int 11) (int 16))

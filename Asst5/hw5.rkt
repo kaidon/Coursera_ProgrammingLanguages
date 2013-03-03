@@ -113,7 +113,12 @@
       (let([pair (car lstlst)])
         (mlet (car pair) (cdr pair) (mlet* (cdr lstlst) e2)))))
 
-(define (ifeq e1 e2 e3 e4) "CHANGE")
+(define (ifeq e1 e2 e3 e4) 
+  (mlet* (list (cons "ifeq-e1" e1) (cons "ifeq-e2" e2))
+         (ifgreater (var "ifeq-e1") (var "ifeq-e2") e4
+                    (ifgreater (var "ifeq-e2") (var "ifeq-e1")
+                               e4
+                               e3))))
 
 ;; Problem 4
 
