@@ -44,6 +44,10 @@
 (define (eval-under-env e env)
   (cond [(var? e) 
          (envlookup env (var-string e))]
+        [(aunit? e) e]         
+        [(isaunit? e)
+          (let ([v (eval-under-env (isaunit-e e) env)])
+            (aunit? v))]
         [(apair? e) 
          (apair (eval-under-env (apair-e1 e) env)
                 (eval-under-env (apair-e2 e) env))]       
