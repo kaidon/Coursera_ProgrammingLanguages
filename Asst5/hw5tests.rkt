@@ -45,6 +45,7 @@
 ;isaunit
 (equal? (int 1) (eval-exp (isaunit (aunit))))
 (equal? (int 0) (eval-exp (isaunit (int 5))))
+(equal? (int 0) (eval-exp (isaunit (apair (int 1) (int 2)))))
 
 ;mlet
 (equal? (int 2) (eval-exp (mlet "a" (int 1) (add (int 1) (var "a")))))
