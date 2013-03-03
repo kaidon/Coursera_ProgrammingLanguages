@@ -45,7 +45,7 @@
   (cond [(var? e) 
          (envlookup env (var-string e))]
         [(aunit? e) e]
-       ; [(closure? e) e]
+        [(closure? e) e]
         [(isaunit? e)
           (let ([v (eval-under-env (isaunit-e e) env)])
             (if (aunit? v) (int 1) (int 0)))]
