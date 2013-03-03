@@ -60,6 +60,15 @@
                          (call (var "f1") (add (var "x") (int 1))))))
        (call (var "func") (int 0)))))
 
+;fun uses closures
+(equal? (int 3)
+(eval-exp
+ (mlet "a" (int 1)
+       (mlet "f" (fun #f "x" (add (var "a") (int 2)))
+             (mlet "a" (int 20) (call (var "f") (int 0)))))))
+             
+               
+
 ; a test case that uses problems 1, 2, and 4
 ; should produce (list (int 10) (int 11) (int 16))
 (define test1
