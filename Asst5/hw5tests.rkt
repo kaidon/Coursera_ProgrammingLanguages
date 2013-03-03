@@ -46,6 +46,9 @@
 (equal? (int 1) (eval-exp (isaunit (aunit))))
 (equal? (int 0) (eval-exp (isaunit (int 5))))
 
+;mlet
+(equal? (int 2) (eval-exp (mlet "a" (int 1) (add (int 1) (var "a")))))
+
 ; a test case that uses problems 1, 2, and 4
 ; should produce (list (int 10) (int 11) (int 16))
 (define test1

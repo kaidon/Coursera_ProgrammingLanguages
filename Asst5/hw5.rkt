@@ -78,7 +78,13 @@
                (if (> (int-num v1) (int-num v2)) 
                    (eval-under-env (ifgreater-e3 e) env)
                    (eval-under-env (ifgreater-e4 e) env))
-               (error "MUPL addition applied to non-number")))]        
+               (error "MUPL addition applied to non-number")))]
+        [(mlet? e)
+         (let ([v (eval-under-env (mlet-e e) env)])
+               (eval-under-env (mlet-body e) 
+                               (cons 
+                                (cons (mlet-var e) v) 
+                                env)))]
         [#t (error "bad MUPL expression")]))
 
 ;; Do NOT change
