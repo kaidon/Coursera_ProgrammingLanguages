@@ -2,6 +2,27 @@
 
 (require "hw5.rkt")
 
+;Simple int
+(equal? (int 1) (eval-exp (int 1)))
+
+;Add
+(equal? (int 3) (eval-exp (add (int 1) (int 2))))
+
+;ifgreater e1 > e2
+(equal?
+ (int 0) 
+ (eval-exp (ifgreater (int 10) (int 9) (int 0) (int 1))))
+
+;ifgreater e1 = e2
+(equal?
+ (int 1) 
+ (eval-exp (ifgreater (int 10) (int 10) (int 0) (int 1))))
+
+;ifgreater e1 < e2
+(equal?
+ (int 1) 
+ (eval-exp (ifgreater (int 9) (int 10) (int 0) (int 1))))
+
 ; a test case that uses problems 1, 2, and 4
 ; should produce (list (int 10) (int 11) (int 16))
 (define test1
@@ -9,3 +30,4 @@
    (eval-exp (call (call mupl-mapAddN (int 7))
                    (racketlist->mupllist 
                     (list (int 3) (int 4) (int 9)))))))
+
