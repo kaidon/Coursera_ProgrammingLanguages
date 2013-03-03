@@ -122,11 +122,17 @@
 
 ;; Problem 4
 
-(define mupl-map "CHANGE")
-
+(define mupl-map 
+  (fun #f "mapFun" 
+       (fun "doMap" "xs" 
+            (ifaunit (var "xs")
+                     (aunit)
+                     (apair (call (var "mapFun") (fst (var "xs")))
+                            (call (var "doMap") (snd (var "xs"))))))))
+                     
 (define mupl-mapAddN 
-  (mlet "map" mupl-map
-        "CHANGE (notice map is now in MUPL scope)"))
+  (fun #f "i"
+       (call mupl-map (fun #f "x" (add (var "i") (var "x"))))))
 
 ;; Challenge Problem
 

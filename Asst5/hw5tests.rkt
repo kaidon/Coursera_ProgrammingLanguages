@@ -85,7 +85,12 @@
 (equal?
  (int 0) 
  (eval-exp (ifeq (int 2) (int 2) (int 0) (int 10))))
-               
+
+;mupl-map
+(equal? 
+ (apair (int 7) (apair (int 8) (aunit)))
+ (eval-exp (call (call mupl-map (fun #f "xf" (add (int 5) (var "xf")))) (apair (int 2) (apair (int 3) (aunit))))))
+
 ; a test case that uses problems 1, 2, and 4
 ; should produce (list (int 10) (int 11) (int 16))
 (define test1
