@@ -46,7 +46,17 @@
          (envlookup env (var-string e))]
         [(apair? e) 
          (apair (eval-under-env (apair-e1 e) env)
-                (eval-under-env (apair-e2 e) env))]
+                (eval-under-env (apair-e2 e) env))]       
+        [(fst? e)
+         (let ([maybePair (eval-under-env (fst-e e) env)])
+           (if (apair? maybePair)
+               (eval-under-env (apair-e1 maybePair) env)
+               (error "MUPL fst applied to non-apair")))]
+        [(snd? e)
+         (let ([maybePair (eval-under-env (snd-e e) env)])
+           (if (apair? maybePair)
+               (eval-under-env (apair-e2 maybePair) env)
+               (error "MUPL fst applied to non-apair")))]
         [(int? e) e]
         [(add? e) 
          (let ([v1 (eval-under-env (add-e1 e) env)]

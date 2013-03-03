@@ -23,6 +23,22 @@
  (int 1) 
  (eval-exp (ifgreater (int 9) (int 10) (int 0) (int 1))))
 
+;apair evaluates expression
+(equal?
+ (apair (int 3) (int 5))
+ (eval-exp (apair (add (int 1) (int 2)) (int 5))))
+
+;fst
+(equal?
+ (int 3)
+ (eval-exp (fst
+            (apair (add (int 1) (int 2)) (int 5)))))
+;snd
+(equal?
+ (int 5)
+ (eval-exp (snd
+            (apair (add (int 1) (int 2)) (int 5)))))
+
 ; a test case that uses problems 1, 2, and 4
 ; should produce (list (int 10) (int 11) (int 16))
 (define test1
