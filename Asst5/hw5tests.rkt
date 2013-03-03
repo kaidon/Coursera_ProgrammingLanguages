@@ -49,6 +49,10 @@
 ;mlet
 (equal? (int 2) (eval-exp (mlet "a" (int 1) (add (int 1) (var "a")))))
 
+;call
+
+;fun
+
 ; a test case that uses problems 1, 2, and 4
 ; should produce (list (int 10) (int 11) (int 16))
 (define test1
