@@ -65,10 +65,18 @@
 (eval-exp
  (mlet "a" (int 1)
        (mlet "f" (fun #f "x" (add (var "a") (int 2)))
-             (mlet "a" (int 20) (call (var "f") (int 0)))))))
-             
-               
+             (mlet "a" (int 20) (call (var "f") (int 0)))))))             
 
+;ifaunit
+(equal? 
+ (ifgreater (isaunit (int 1)) (int 0) (int 2) (int 3))
+ (ifaunit (int 1) (int 2) (int 3)))
+
+;mlet*
+(equal?
+ (mlet "a" (int 1) (mlet "b" (int 2) (int 3)))
+ (mlet* (list (cons "a" (int 1)) (cons "b" (int 2))) (int 3)))
+               
 ; a test case that uses problems 1, 2, and 4
 ; should produce (list (int 10) (int 11) (int 16))
 (define test1
