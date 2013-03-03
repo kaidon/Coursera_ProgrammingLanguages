@@ -47,7 +47,7 @@
         [(aunit? e) e]         
         [(isaunit? e)
           (let ([v (eval-under-env (isaunit-e e) env)])
-            (aunit? v))]
+            (if (aunit? v) (int 1) (int 0)))]
         [(apair? e) 
          (apair (eval-under-env (apair-e1 e) env)
                 (eval-under-env (apair-e2 e) env))]       
@@ -78,7 +78,7 @@
                (if (> (int-num v1) (int-num v2)) 
                    (eval-under-env (ifgreater-e3 e) env)
                    (eval-under-env (ifgreater-e4 e) env))
-               (error "MUPL addition applied to non-number")))]
+               (error "MUPL addition applied to non-number")))]        
         [#t (error "bad MUPL expression")]))
 
 ;; Do NOT change
