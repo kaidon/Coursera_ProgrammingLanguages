@@ -83,16 +83,18 @@
          (let ([v (eval-under-env (mlet-e e) env)])
                (eval-under-env (mlet-body e) 
                                (cons (cons (mlet-var e) v) env)))]
+        [(fun? e)
+         (closure env e)]
         [(call? e)
          (let ([v1 (eval-under-env (call-funexp e) env)]
                [v2 (eval-under-env (call-actual e) env)])
            (if (closure? v1)               
                (letrec ([closFun (closure-fun v1)]
-                        [baseEnv (cons (cons (fun-formal v1) v2) (closure-env v1))]
+                        [baseEnv (cons (cons (fun-formal closFun) v2) (closure-env v1))]
                         [usedEnv 
-                         (if (equal? (fun-nameopt (closFun v1)) #f)
+                         (if (equal? (fun-nameopt closFun) #f)
                              baseEnv ; If not a recursive functionl,just add the function parameter to f                          
-                             (cons (cons (fun-nameopt closFun) closFun) baseEnv))]) ; Otherwise, add both the parameter AND the function.
+                             (cons (cons (fun-nameopt closFun) closFun) baseEnv))]) ; Otherwise, add both the parameter AND the function.                 
                  (eval-under-env (fun-body closFun) usedEnv))
                (error "MUPL call-funexp applied to a non-closure")))]
         [#t (error "bad MUPL expression")]))
