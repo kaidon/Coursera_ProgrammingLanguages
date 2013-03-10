@@ -44,7 +44,8 @@
 (define (eval-under-env e env)
   (cond [(var? e) 
          (envlookup env (var-string e))]
-        [(aunit? e) e]         
+        [(aunit? e) e]
+        [(closure? e) e]
         [(isaunit? e)
           (let ([v (eval-under-env (isaunit-e e) env)])
             (if (aunit? v) (int 1) (int 0)))]
@@ -114,9 +115,9 @@
         (mlet (car pair) (cdr pair) (mlet* (cdr lstlst) e2)))))
 
 (define (ifeq e1 e2 e3 e4) 
-  (mlet* (list (cons "ifeq-e1" e1) (cons "ifeq-e2" e2))
-         (ifgreater (var "ifeq-e1") (var "ifeq-e2") e4
-                    (ifgreater (var "ifeq-e2") (var "ifeq-e1")
+  (mlet* (list (cons "_x" e1) (cons "_y" e2))
+         (ifgreater (var "_x") (var "_y") e4
+                    (ifgreater (var "_y") (var "_x")
                                e4
                                e3))))
 
