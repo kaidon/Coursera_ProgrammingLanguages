@@ -4,8 +4,16 @@
 # part of your solution.
 
 class MyTetris < Tetris
-  # your enhancements here
-
+  #enh 1, 'u' rotates 180degrees
+  def key_bindings
+    super
+    @root.bind('u', 
+               proc {
+                 @board.rotate_counter_clockwise;
+                 @board.rotate_counter_clockwise;
+               })
+  end
+                 
 end
 
 class MyPiece < Piece
@@ -16,6 +24,6 @@ class MyPiece < Piece
 end
 
 class MyBoard < Board
-  # your enhancements here
+
 
 end
