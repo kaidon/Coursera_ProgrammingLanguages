@@ -12,6 +12,10 @@ class MyTetris < Tetris
                  @board.rotate_counter_clockwise;
                  @board.rotate_counter_clockwise;
                })
+    @root.bind('c',
+               proc {
+                 @board.cheat
+               })
   end
 
   def set_board
@@ -32,8 +36,14 @@ class MyPiece < Piece
      [[0,0],[0,-1],[0,-2],[0,1],[0,2]]],
     rotations([[0,0],[-1,0],[-1,1]])] #New piece 3
 
+  CheatPiece = [[0,0]]
+
   def self.next_piece(board)
     MyPiece.new(All_My_Pieces.sample, board)
+  end
+
+  def self.cheat_piece(board)
+    MyPiece.new(CheatPiece, board)
   end
 
 end
@@ -45,7 +55,13 @@ class MyBoard < Board
   end
 
   def next_piece
-    @current_block = MyPiece.next_piece(self)
+    if(@overrideNextPiece != nil)
+      @current_block = @overrideNextPiece
+      @overrideNextPiece = nil
+    else
+      @current_block = MyPiece.next_piece(self)
+    end
+
     @current_pos = nil
   end
 
@@ -59,6 +75,13 @@ class MyBoard < Board
     }
     remove_filled
     @delay = [@delay - 2, 80].max
+  end
+
+  def cheat
+    if(@score >= 100 && @overrideNextPiece == nil)
+      @score -= 100
+      @overrideNextPiece = MyPiece.cheat_piece(self)
+    end
   end
 
 end
