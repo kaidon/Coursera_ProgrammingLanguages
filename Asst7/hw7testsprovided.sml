@@ -29,6 +29,15 @@ in
 	else (print "preprocess does not flip an improper LineSegment successfully\n")
 end;
 
+let 
+	val LineSegment(a,b,c,d) = preprocess_prog (LineSegment(3.2,4.1,3.2,1.1))
+	val LineSegment(e,f,g,h) = LineSegment(3.2,1.1,3.2,4.1)
+in
+	if real_equal(a,e) andalso real_equal(b,f) andalso real_equal(c,g) andalso real_equal(d,h)
+	then (print "preprocess flips an improper LineSegment successfully\n")
+	else (print "preprocess does not flip an improper LineSegment successfully\n")
+end;
+
 (* eval_prog tests with Shift*)
 let 
 	val Point(a,b) = (eval_prog (preprocess_prog (Shift(3.0, 4.0, Point(4.0,4.0))), []))

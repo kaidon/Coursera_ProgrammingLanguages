@@ -59,7 +59,7 @@ fun intersect (v1,v2) =
     case (v1,v2) of
 	
        (NoPoints, _) => NoPoints (* 5 cases *)
-     | (_, NoPoints) => NoPoints (* 4 additional cases *)
+      | (_, NoPoints) => NoPoints (* 4 additional cases *)
 
      | 	(Point p1, Point p2) => if real_close_point p1 p2
 				then v1
@@ -88,7 +88,7 @@ fun intersect (v1,v2) =
 		val y = m1 * x + b1
 	    in
 		Point (x,y)
-	    end
+ 	    end
 
       | (Line (m1,b1), VerticalLine x2) => Point(x2, m1 * x2 + b1)
 
@@ -197,4 +197,33 @@ fun eval_prog (e,env) =
       | Intersect(e1,e2) => intersect(eval_prog(e1,env), eval_prog(e2, env))
 (* CHANGE: Add a case for Shift expressions *)
 
-(* CHANGE: Add function preprocess_prog of type geom_exp -> geom_exp *)
+(* preprocess_prog (geom_exp -> geom_exp)
+   a. Line Segments with very close points become a point
+   b. Order the Line Segement such that the Points
+      are in ascending X order, then ascending Y (if X are equivalent) 
+*)      
+
+fun flip (x1,y1,x2,y2) =
+	 LineSegment(x2,y2,x1,y1)
+
+fun preprocess_prog e =
+    case e of
+	LineSegment (x1,y1,x2,y2) =>
+	if real_close_point (x1,y1) (x2,y2) 
+	then
+	    Point(x1,y1)
+	else
+	    if real_close(x1,x2)
+	    then
+		if y2 < y1 
+		then
+		    LineSegment(x2,y2,x1,y1)
+		else
+		    e
+	    else 
+		if x2 < x1 
+		then
+		    LineSegment(x2,y2,x1,y1)
+		else
+		    e			
+      | _ => e
