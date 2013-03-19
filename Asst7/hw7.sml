@@ -19,7 +19,7 @@ datatype geom_exp =
 	 | Intersect of geom_exp * geom_exp (* intersection expression *)
 	 | Let of string * geom_exp * geom_exp (* let s = e1 in e2 *)
 	 | Var of string
-(* CHANGE add shifts for expressions of the form Shift(deltaX, deltaY, exp *)
+	 | Shift of real * real * geom_exp (* deltaX * deltaY * expression*)
 
 exception BadProgram of string
 exception Impossible of string
@@ -172,6 +172,19 @@ fun intersect (v1,v2) =
 	  | _ => raise Impossible "bad result from intersecting with a line")
       | _ => raise Impossible "bad call to intersect: only for shape values"
 
+(* Helper function for Shift capability.
+   Works with an already evaluated expression, so we should just be dealing
+   with NoPoints, Point, Line, VerticalLine & LineSegment *)
+fun shift (dx,dy,e) =
+    case e of 
+	NoPoints => e
+      | Point(x,y) => Point(x+dx,y+dy)
+      | Line(m,b)  =>  Line(m, b+dy - m*dx)
+      | VerticalLine x => VerticalLine(x + dx)
+      | LineSegment(x1,y1,x2,y2) => LineSegment(x1+dx,y1+dy,x2+dx,y2+dy)
+      | _ => raise BadProgram("Shift not applicable for this type")
+
+
 (* interpreter for our language: 
    * takes a geometry expression and returns a geometry value
    * for simplicity we have the top-level function take an environment,
@@ -195,7 +208,7 @@ fun eval_prog (e,env) =
 	   | SOME (_,v) => v)
       | Let(s,e1,e2) => eval_prog (e2, ((s, eval_prog(e1,env)) :: env))
       | Intersect(e1,e2) => intersect(eval_prog(e1,env), eval_prog(e2, env))
-(* CHANGE: Add a case for Shift expressions *)
+      | Shift(dx,dy,e1) => shift(dx,dy,eval_prog(e1,env))
 
 (* preprocess_prog (geom_exp -> geom_exp)
    a. Line Segments with very close points become a point
